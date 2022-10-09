@@ -1,3 +1,5 @@
+import 'package:chat_app/helper/widgets.dart';
+import 'package:chat_app/pages/auth_page/reg_page.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
@@ -15,60 +17,84 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Center(
-      child: Form(
-        key: formkey,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextFormField(
-              decoration: InputDecoration(hintText: "Email"),
-              onChanged: (value) {
-                setState(
-                  () {
-                    email = value;
-                    print(email);
-                  },
-                );
-              },
-              validator: (value) {
-                return RegExp(
-                            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                        .hasMatch(value!)
-                    ? null
-                    : "Please Enter a valid Email";
-              },
-            ),
-            TextFormField(
-              obscureText: true,
-              decoration: const InputDecoration(hintText: "Password"),
-              onChanged: (value) {
-                setState(
-                  () {
-                    password = value;
-                    print(password);
-                  },
-                );
-              },
-              validator: (value) {
-                if (value!.length < 6) {
-                  return "Password Must be at least 6";
-                } else {
-                  return null;
-                }
-              },
-            ),
-            MaterialButton(
-              color: Colors.green,
-              onPressed: () {},
-              child: const Text("Log in"),
-            ),
-            MaterialButton(
-              color: Colors.blue,
-              onPressed: () {},
-              child: const Text("register now"),
-            )
-          ],
+        body: Padding(
+      padding: const EdgeInsets.all(30),
+      child: Center(
+        child: Form(
+          key: formkey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextFormField(
+                decoration: InputDecoration(
+                  hintText: "Email",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
+                onChanged: (value) {
+                  setState(
+                    () {
+                      email = value;
+                      print(email);
+                    },
+                  );
+                },
+                validator: (value) {
+                  return RegExp(
+                              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                          .hasMatch(value!)
+                      ? null
+                      : "Please Enter a valid Email";
+                },
+              ),
+              const SizedBox(
+                height: 25,
+              ),
+              TextFormField(
+                obscureText: true,
+                decoration: InputDecoration(
+                  hintText: "Password",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
+                onChanged: (value) {
+                  setState(
+                    () {
+                      password = value;
+                      print(password);
+                    },
+                  );
+                },
+                validator: (value) {
+                  if (value!.length < 6) {
+                    return "Password Must be at least 6";
+                  } else {
+                    return null;
+                  }
+                },
+              ),
+              const SizedBox(
+                height: 25,
+              ),
+              MaterialButton(
+                color: Colors.green,
+                onPressed: () {},
+                child: const Text("Log in"),
+              ),
+              const SizedBox(
+                height: 25,
+              ),
+              MaterialButton(
+                color: Colors.blue,
+                onPressed: () {
+                  nextScreen(context, const RegisterPage());
+                },
+                child: const Text("register now"),
+              )
+            ],
+          ),
         ),
       ),
     ));
