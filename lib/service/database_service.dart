@@ -14,11 +14,11 @@ class DatabaseService {
       FirebaseFirestore.instance.collection("groups");
 //UpDate user data
   Future updateUserData(
-    String fullName,
+    String fullname,
     String email,
   ) async {
     return await userCollection.doc(uid).set({
-      "fullName": fullName,
+      "fullName": fullname,
       "email": email,
       "groups": [],
       "profilePic": "",

@@ -17,3 +17,12 @@ void nextScreenReplace(context, page) {
     ),
   );
 }
+
+void showSnackbar(context, color, massage) {
+  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    content: Text(massage),
+    backgroundColor: color,
+    duration: const Duration(seconds: 2),
+    action: SnackBarAction(label: "Gotcha", onPressed: () {}),
+  ));
+}
