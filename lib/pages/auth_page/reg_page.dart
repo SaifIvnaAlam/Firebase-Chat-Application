@@ -1,5 +1,7 @@
+import 'package:chat_app/helper/helper_fancttion.dart';
 import 'package:chat_app/helper/widgets.dart';
 import 'package:chat_app/pages/auth_page/Login_page.dart';
+import 'package:chat_app/pages/home_page.dart';
 import 'package:chat_app/service/auth_service.dart';
 import 'package:flutter/material.dart';
 
@@ -134,8 +136,13 @@ class _RegisterPageState extends State<RegisterPage> {
       });
       await authService
           .registerUserWithEmailAndPassword(fullName, email, password)
-          .then((value) {
+          .then((value) async {
         if (value == true) {
+          // await HelperFunction.saveUserLoggedInStatus(true);
+
+          // await HelperFunction.saveUserEmailSF(email);
+          // await HelperFunction.saveUsernameSF(fullName);
+          // nextScreenReplace(context, HomePage());
         } else {
           setState(() {
             showSnackbar(context, Colors.red, value.toString());
