@@ -30,7 +30,9 @@ class _MyAppState extends State<MyApp> {
   void getUserLoggedInStatus() async {
     await HelperFunction.getUserLoggedInStatud().then((value) {
       if (value != null) {
-        _isSingedin = value;
+        setState(() {
+          _isSingedin = value;
+        });
       }
     });
   }

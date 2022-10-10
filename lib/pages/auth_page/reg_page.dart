@@ -138,11 +138,11 @@ class _RegisterPageState extends State<RegisterPage> {
           .registerUserWithEmailAndPassword(fullName, email, password)
           .then((value) async {
         if (value == true) {
-          // await HelperFunction.saveUserLoggedInStatus(true);
+          await HelperFunction.saveUserLoggedInStatus(true);
 
-          // await HelperFunction.saveUserEmailSF(email);
-          // await HelperFunction.saveUsernameSF(fullName);
-          // nextScreenReplace(context, HomePage());
+          await HelperFunction.saveUserEmailSF(email);
+          await HelperFunction.saveUsernameSF(fullName);
+          nextScreenReplace(context, const HomePage());
         } else {
           setState(() {
             showSnackbar(context, Colors.red, value.toString());
