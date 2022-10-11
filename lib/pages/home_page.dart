@@ -1,6 +1,7 @@
 import 'package:chat_app/helper/helper_fancttion.dart';
 import 'package:chat_app/helper/widgets.dart';
 import 'package:chat_app/pages/auth_page/Login_page.dart';
+import 'package:chat_app/pages/profile_Page.dart';
 
 import 'package:chat_app/pages/search_page.dart';
 import 'package:chat_app/service/auth_service.dart';
@@ -72,15 +73,40 @@ class _HomePageState extends State<HomePage> {
             ),
             MaterialButton(
               onPressed: () {
-                authService.signOut();
-                nextScreen(context, LoginPage());
+                nextScreen(context, const ProfilePage());
               },
               child: Row(
-                children: [Icon(Icons.logout), Text("Log out")],
+                children: const [
+                  Icon(Icons.person),
+                  SizedBox(
+                    width: 12,
+                  ),
+                  Text("Profile")
+                ],
+              ),
+            ),
+            MaterialButton(
+              onPressed: () {
+                authService.signOut().whenComplete(() {
+                  nextScreen(context, const LoginPage());
+                });
+              },
+              child: Row(
+                children: const [
+                  Icon(Icons.logout),
+                  SizedBox(
+                    width: 12,
+                  ),
+                  Text("Log out")
+                ],
               ),
             )
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: (() {}),
+        child: Icon(Icons.add),
       ),
     );
   }
