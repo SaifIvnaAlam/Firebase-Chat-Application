@@ -6,6 +6,7 @@ import 'package:chat_app/pages/profile_Page.dart';
 import 'package:chat_app/pages/search_page.dart';
 import 'package:chat_app/service/auth_service.dart';
 import 'package:chat_app/service/database_service.dart';
+import 'package:chat_app/widgets/group_tile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -23,11 +24,25 @@ class _HomePageState extends State<HomePage> {
   Stream? groups;
   // ignore: prefer_final_fields
   bool _isLoading = false;
-
+  String groupName = "";
   @override
   void initState() {
     getingUserData();
     super.initState();
+  }
+
+  //string manipulation to get group id and name
+  String getgroupId(String res) {
+    var text = res.substring(0, res.indexOf("_"));
+
+    var text2 = text.split("(groups/").last;
+    var text3 = text2.substring(0, text2.indexOf(")"));
+    return text3;
+  }
+
+  //string manipulation to get group id and name
+  String getGroupName(String res) {
+    return res.substring(res.indexOf("_") + 1);
   }
 
   void getingUserData() async {
@@ -48,6 +63,7 @@ class _HomePageState extends State<HomePage> {
       setState(() {
         groups = snapshot;
       });
+      print(snapshot);
     });
   }
 
@@ -133,6 +149,8 @@ class _HomePageState extends State<HomePage> {
         context: context,
         builder: (context) {
           return AlertDialog(
+            //todo: call the database to create groups
+
             title: const Text("Create Group"),
             content: Column(
               mainAxisSize: MainAxisSize.min,
@@ -142,6 +160,9 @@ class _HomePageState extends State<HomePage> {
                         child: CircularProgressIndicator(),
                       )
                     : TextField(
+                        onChanged: ((value) {
+                          groupName = value;
+                        }),
                         cursorColor: Colors.black,
                         style: const TextStyle(color: Colors.black),
                         decoration: InputDecoration(
@@ -159,7 +180,25 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      if (groupName != "") {
+                        setState(() {
+                          _isLoading = true;
+                        });
+                        DatabaseService(
+                                uid: FirebaseAuth.instance.currentUser!.uid)
+                            .createGroup(
+                                username!,
+                                FirebaseAuth.instance.currentUser!.uid,
+                                groupName)
+                            .whenComplete(() {
+                          _isLoading = false;
+                        });
+                        Navigator.of(context).pop();
+                        showSnackbar(context, Colors.green,
+                            "Group Created Successfully");
+                      }
+                    },
                     style: ElevatedButton.styleFrom(
                         shadowColor: Colors.pink,
                         fixedSize: const Size(100, 10),
@@ -192,11 +231,23 @@ class _HomePageState extends State<HomePage> {
     return StreamBuilder(
         stream: groups,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
-          var ax = snapshot.data;
           if (snapshot.hasData) {
+            var ax = snapshot.data;
+            int bx = ax['groups'].length;
             if (ax['groups'] != null) {
-              if (ax['groups'].length != 0) {
-                return const Text("Hello");
+              if (bx != 0) {
+                print(getgroupId(ax["groups"][0]));
+
+                return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: bx,
+                    reverse: true,
+                    itemBuilder: (context, index) {
+                      return GroupTile(
+                          groupid: getgroupId(ax["groups"][index]),
+                          groupname: getGroupName(ax['groups'][index]),
+                          username: ax['fullName']);
+                    });
               } else {
                 return const Center(
                   child: Text("You have no Groups"),
