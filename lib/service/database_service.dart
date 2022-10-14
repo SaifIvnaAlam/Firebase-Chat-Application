@@ -39,7 +39,7 @@ class DatabaseService {
 
 //Creating Group
   Future createGroup(String userName, String id, String groupName) async {
-    DocumentReference documentReference = await groupCollection.add({
+    DocumentReference groupdocumentReference = await groupCollection.add({
       "GroupName": groupName,
       "groupIcon": "",
       "admin": "${id}_$userName",
@@ -48,10 +48,16 @@ class DatabaseService {
       "rececntMessage": "",
       "recentMessageSender": "",
     });
-
-    await documentReference.update({
+//update group information after group has been created
+    await groupdocumentReference.update({
       "members": FieldValue.arrayUnion(["${uid}_$userName"]),
-      "groupId": documentReference.id
+      "groupId": groupdocumentReference.id
+    });
+
+    //update group list in usercollection
+    DocumentReference userDocumentReference = userCollection.doc(uid);
+    return await userDocumentReference.update({
+      "groups": FieldValue.arrayUnion(["${groupdocumentReference}_$groupName"])
     });
   }
 }
