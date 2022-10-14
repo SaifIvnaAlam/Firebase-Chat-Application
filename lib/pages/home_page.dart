@@ -21,6 +21,7 @@ class _HomePageState extends State<HomePage> {
   String? username = "";
   String? email = "";
   Stream? groups;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -125,14 +126,81 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void popUpDialog(BuildContext context) {}
+  void popUpDialog(BuildContext context) {
+    showDialog(
+        // barrierDismissible: false,
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text("Create Group"),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _isLoading == true
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : TextField(
+                        cursorColor: Colors.black,
+                        style: const TextStyle(color: Colors.black),
+                        decoration: InputDecoration(
+                          hintText: "Group Name",
+                          filled: true,
+                          fillColor: Colors.white,
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(50)),
+                        ),
+                      )
+              ],
+            ),
+            actions: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                        shadowColor: Colors.pink,
+                        fixedSize: const Size(100, 10),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50))),
+                    child: const Text('Create'),
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    style: ElevatedButton.styleFrom(
+                        primary: Colors.pink,
+                        fixedSize: const Size(100, 10),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50))),
+                    child: const Text('Cancle'),
+                  ),
+                ],
+              ),
+            ],
+          );
+        });
+  }
+
   groupList() {
     return StreamBuilder(
         stream: groups,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
+          var ax = snapshot.data;
           if (snapshot.hasData) {
-            if (snapshot.data['groups'] != null) {
-              return const Text("Hello");
+            if (ax['groups'] != null) {
+              if (ax['groups'].length != 0) {
+                return const Text("Hello");
+              } else {
+                return const Center(
+                  child: Text("You have no Groups"),
+                );
+              }
             } else {
               return const Center(
                 child: Text("You have no Groups"),
