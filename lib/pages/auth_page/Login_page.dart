@@ -6,7 +6,7 @@ import 'package:chat_app/service/auth_service.dart';
 import 'package:chat_app/service/database_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
+
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
@@ -48,7 +48,6 @@ class _LoginPageState extends State<LoginPage> {
                             setState(
                               () {
                                 email = value;
-                                print(email);
                               },
                             );
                           },
@@ -75,7 +74,6 @@ class _LoginPageState extends State<LoginPage> {
                             setState(
                               () {
                                 password = value;
-                                print(password);
                               },
                             );
                           },

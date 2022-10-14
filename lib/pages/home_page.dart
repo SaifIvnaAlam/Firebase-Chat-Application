@@ -21,6 +21,7 @@ class _HomePageState extends State<HomePage> {
   String? username = "";
   String? email = "";
   Stream? groups;
+  // ignore: prefer_final_fields
   bool _isLoading = false;
 
   @override

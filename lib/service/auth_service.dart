@@ -1,6 +1,6 @@
 import 'package:chat_app/helper/helper_fancttion.dart';
 import 'package:chat_app/service/database_service.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthService {
@@ -18,11 +18,7 @@ class AuthService {
       await DatabaseService(uid: user.uid).savingUserData(fullname, email);
       return true;
     } on FirebaseAuthException catch (error) {
-      print(error);
-      print("Error");
       return error.message;
-    } catch (e) {
-      print(e);
     }
   }
 
@@ -35,8 +31,6 @@ class AuthService {
 
       return true;
     } on FirebaseAuthException catch (e) {
-      print(e);
-
       return e.message;
     }
   }
