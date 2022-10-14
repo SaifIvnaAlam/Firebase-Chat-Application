@@ -36,4 +36,22 @@ class DatabaseService {
   getUserGroups() async {
     return userCollection.doc(uid).snapshots();
   }
+
+//Creating Group
+  Future createGroup(String userName, String id, String groupName) async {
+    DocumentReference documentReference = await groupCollection.add({
+      "GroupName": groupName,
+      "groupIcon": "",
+      "admin": "${id}_$userName",
+      "members": [],
+      "groupId": "",
+      "rececntMessage": "",
+      "recentMessageSender": "",
+    });
+
+    await documentReference.update({
+      "members": FieldValue.arrayUnion(["${uid}_$userName"]),
+      "groupId": documentReference.id
+    });
+  }
 }

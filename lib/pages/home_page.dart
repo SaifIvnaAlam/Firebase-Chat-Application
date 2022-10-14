@@ -129,7 +129,7 @@ class _HomePageState extends State<HomePage> {
 
   void popUpDialog(BuildContext context) {
     showDialog(
-        // barrierDismissible: false,
+        barrierDismissible: false,
         context: context,
         builder: (context) {
           return AlertDialog(
