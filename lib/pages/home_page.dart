@@ -5,6 +5,8 @@ import 'package:chat_app/pages/profile_Page.dart';
 
 import 'package:chat_app/pages/search_page.dart';
 import 'package:chat_app/service/auth_service.dart';
+import 'package:chat_app/service/database_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -18,6 +20,7 @@ class _HomePageState extends State<HomePage> {
   AuthService authService = AuthService();
   String? username = "";
   String? email = "";
+  Stream? groups;
 
   @override
   void initState() {
@@ -34,6 +37,14 @@ class _HomePageState extends State<HomePage> {
     await HelperFunction.getUserEmailSF().then((value) {
       setState(() {
         email = value;
+      });
+    });
+//Getting list of snapshot in the stream
+    await DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid)
+        .getUserGroups()
+        .then((snapshot) {
+      setState(() {
+        groups = snapshot;
       });
     });
   }
@@ -104,10 +115,34 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
+      body: groupList(),
       floatingActionButton: FloatingActionButton(
-        onPressed: (() {}),
-        child: Icon(Icons.add),
+        onPressed: (() {
+          popUpDialog(context);
+        }),
+        child: const Icon(Icons.add),
       ),
     );
+  }
+
+  void popUpDialog(BuildContext context) {}
+  groupList() {
+    return StreamBuilder(
+        stream: groups,
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.hasData) {
+            if (snapshot.data['groups'] != null) {
+              return const Text("Hello");
+            } else {
+              return const Center(
+                child: Text("You have no Groups"),
+              );
+            }
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        });
   }
 }

@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 
 class DatabaseService {
   final String? uid;
@@ -31,5 +30,10 @@ class DatabaseService {
     QuerySnapshot snapshot =
         await userCollection.where("email", isEqualTo: email).get();
     return snapshot;
+  }
+
+//get user group
+  getUserGroups() async {
+    return userCollection.doc(uid).snapshots();
   }
 }
