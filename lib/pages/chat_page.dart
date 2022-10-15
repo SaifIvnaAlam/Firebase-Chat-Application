@@ -59,6 +59,7 @@ class _ChatPageState extends State<ChatPage> {
                     GroupInfoPage(
                       adminName: admin,
                       groupName: widget.groupName,
+                      groupId: widget.groupId,
                     ));
               },
               icon: const Icon(Icons.info))
