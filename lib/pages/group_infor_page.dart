@@ -67,7 +67,20 @@ class _GroupInfoPageState extends State<GroupInfoPage> {
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.hasData) {
             if (snapshot.data['members'] != null) {
-              return Text("it is null");
+              var ax = snapshot.data['members'] as List;
+              int bx = ax.length;
+              if (bx != 0) {
+                // return ListView.builder(
+                //   itemCount: bx,
+                //   itemBuilder: (BuildContext context, int index) {
+                //     return ListTile(
+                //         title: Text(getName(snapshot.data["memebers"][index])));
+                //   },
+                // );
+                return Text("Jamela nai");
+              } else {
+                return Text("jamela ase");
+              }
             } else {
               return Text("it is null");
             }
